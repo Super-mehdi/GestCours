@@ -1,0 +1,98 @@
+<div class="students-dashboard">
+  <!-- Header Bar -->
+  <div class="header-section">
+    <div class="title-wrap">
+      <h2>Students & Enrolled Courses</h2>
+      <p class="subtitle">Assign and manage courses directly for each student</p>
+    </div>
+    <div class="action-wrap">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search students...</mat-label>
+        <input matInput [(ngModel)]="searchFilter" placeholder="Filter by name or email">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="add-btn" (click)="openAddStudentDialog()">
+        <mat-icon>person_add</mat-icon> Add Student
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="content-card">
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+
+    <div *ngIf="!isLoading && filteredStudents.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">school</mat-icon>
+      <p *ngIf="students.length === 0">No students registered yet. Click "Add Student" above to begin!</p>
+      <p *ngIf="students.length > 0">No students match your filter criteria.</p>
+    </div>
+
+    <!-- Student Cards/List with expand details -->
+    <div class="student-accordion" *ngIf="filteredStudents.length > 0">
+      <div *ngFor="let student of filteredStudents" class="student-item" [class.expanded]="expandedStudentId === student.id">
+        <!-- Main Student Row -->
+        <div class="student-main-row" (click)="toggleExpand(student)">
+          <div class="avatar-cell">
+            <div class="avatar">{{ student.firstName[0] }}{{ student.lastName[0] }}</div>
+          </div>
+
+          <div class="info-cell">
+            <span class="student-name">{{ student.firstName }} {{ student.lastName }}</span>
+            <span class="student-email">{{ student.email }}</span>
+          </div>
+
+          <div class="badges-cell">
+            <span class="badge" [class.has-courses]="getEnrolledCourses(student.id).length > 0">
+              <mat-icon class="badge-icon">menu_book</mat-icon>
+              {{ getEnrolledCourses(student.id).length }} Enrolled Course{{ getEnrolledCourses(student.id).length === 1 ? '' : 's' }}
+            </span>
+          </div>
+
+          <div class="actions-cell" (click)="$event.stopPropagation()">
+            <button mat-stroked-button color="primary" class="assign-btn" (click)="openAssignCourseDialog(student)">
+              <mat-icon>add_circle_outline</mat-icon> Assign Course
+            </button>
+            <button mat-icon-button color="primary" matTooltip="Edit Student" (click)="openEditStudentDialog(student)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Delete Student" (click)="deleteStudent(student)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button (click)="toggleExpand(student)">
+              <mat-icon>{{ expandedStudentId === student.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Collapsible Enrolled Courses Panel -->
+        <div class="student-details-panel" *ngIf="expandedStudentId === student.id">
+          <div class="panel-header">
+            <h4>Assigned Courses</h4>
+            <button mat-button color="primary" (click)="openAssignCourseDialog(student)">
+              <mat-icon>add</mat-icon> Add another course
+            </button>
+          </div>
+
+          <div *ngIf="getEnrolledCourses(student.id).length === 0" class="no-enrolled">
+            <span>This student is not enrolled in any courses yet.</span>
+          </div>
+
+          <div class="enrolled-grid" *ngIf="getEnrolledCourses(student.id).length > 0">
+            <div *ngFor="let reg of getEnrolledCourses(student.id)" class="course-card">
+              <div class="course-header">
+                <span class="course-title">[{{ reg.course.code }}] {{ reg.course.name }}</span>
+                <span class="status-tag" [class.active]="reg.status === 'ACTIVE'">{{ reg.status }}</span>
+              </div>
+              <p class="course-desc">{{ reg.course.description }}</p>
+              <div class="course-actions">
+                <button mat-button color="warn" (click)="unregisterCourse(reg, student)">
+                  <mat-icon>remove_circle_outline</mat-icon> Unregister
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

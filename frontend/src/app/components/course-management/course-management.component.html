@@ -1,0 +1,62 @@
+<div class="courses-container">
+  <div class="header-actions">
+    <div class="title-section">
+      <h2>Courses Catalog</h2>
+      <p class="subtitle">Manage available courses in the curriculum</p>
+    </div>
+    <button mat-raised-button color="accent" (click)="openAddCourseDialog()">
+      <mat-icon>add</mat-icon> Add Course
+    </button>
+  </div>
+
+  <mat-card class="table-card">
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+
+    <div *ngIf="!isLoading && courses.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">school</mat-icon>
+      <p>No courses found. Click "Add Course" above to create one.</p>
+    </div>
+
+    <table mat-table [dataSource]="courses" *ngIf="courses.length > 0" class="courses-table">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let course"> #{{ course.id }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef> Code </th>
+        <td mat-cell *matCellDef="let course"> <span class="course-code-badge">{{ course.code }}</span> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Course Name </th>
+        <td mat-cell *matCellDef="let course"> <strong>{{ course.name }}</strong> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="capacity">
+        <th mat-header-cell *matHeaderCellDef> Capacity </th>
+        <td mat-cell *matCellDef="let course"> {{ course.capacity }} students </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let course"> {{ course.description }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions-header"> Actions </th>
+        <td mat-cell *matCellDef="let course" class="actions-cell">
+          <button mat-icon-button color="primary" matTooltip="Edit Course" (click)="openEditCourseDialog(course)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" matTooltip="Delete Course" (click)="deleteCourse(course)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card>
+</div>

@@ -1,0 +1,85 @@
+.main-toolbar {
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0 24px;
+}
+
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  margin-right: 32px;
+
+  .brand-icon {
+    font-size: 28px;
+    height: 28px;
+    width: 28px;
+  }
+
+  .brand-title {
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+}
+
+.toolbar-nav {
+  display: flex;
+  gap: 8px;
+
+  a {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.85;
+    transition: opacity 0.2s, background-color 0.2s;
+
+    mat-icon {
+      margin-right: 6px;
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+      vertical-align: middle;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &.active-link {
+      opacity: 1;
+      background-color: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+  }
+}
+
+.spacer {
+  flex: 1;
+}
+
+.backend-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.12);
+  padding: 4px 10px;
+  border-radius: 12px;
+
+  .status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #4caf50;
+  }
+}
+
+.main-content {
+  min-height: calc(100vh - 64px);
+  background-color: #f8fafc;
+}

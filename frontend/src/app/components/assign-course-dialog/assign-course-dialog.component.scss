@@ -1,0 +1,27 @@
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 380px;
+  padding-top: 10px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.no-courses-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #c2185b;
+  padding: 12px 0;
+  font-size: 14px;
+}

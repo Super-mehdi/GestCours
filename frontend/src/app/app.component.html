@@ -1,0 +1,25 @@
+<mat-toolbar color="primary" class="main-toolbar">
+  <div class="toolbar-brand">
+    <mat-icon class="brand-icon">school</mat-icon>
+    <span class="brand-title">StudentCourse Portal</span>
+  </div>
+
+  <nav class="toolbar-nav">
+    <a mat-button routerLink="/students" routerLinkActive="active-link">
+      <mat-icon>people</mat-icon> Students & Enrollments
+    </a>
+    <a mat-button routerLink="/courses" routerLinkActive="active-link">
+      <mat-icon>menu_book</mat-icon> Courses Catalog
+    </a>
+  </nav>
+
+  <span class="spacer"></span>
+
+  <div class="backend-tag">
+    <span class="status-indicator"></span> Backend: 8082
+  </div>
+</mat-toolbar>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
