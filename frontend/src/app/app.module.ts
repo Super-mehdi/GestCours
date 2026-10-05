@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Material Modules
@@ -18,23 +18,31 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LoginComponent } from './components/login/login.component';
 import { StudentListComponent } from './components/student-list/student-list.component';
 import { StudentDialogComponent } from './components/student-dialog/student-dialog.component';
 import { CourseManagementComponent } from './components/course-management/course-management.component';
 import { CourseDialogComponent } from './components/course-dialog/course-dialog.component';
 import { AssignCourseDialogComponent } from './components/assign-course-dialog/assign-course-dialog.component';
+import { AdminRequestsComponent } from './components/admin-requests/admin-requests.component';
+import { StudentPortalComponent } from './components/student-portal/student-portal.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     StudentListComponent,
     StudentDialogComponent,
     CourseManagementComponent,
     CourseDialogComponent,
-    AssignCourseDialogComponent
+    AssignCourseDialogComponent,
+    AdminRequestsComponent,
+    StudentPortalComponent
   ],
   imports: [
     BrowserModule,
@@ -55,10 +63,16 @@ import { AssignCourseDialogComponent } from './components/assign-course-dialog/a
     MatSnackBarModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatChipsModule
   ],
   providers: [
-    provideHttpClient(withInterceptorsFromDi())
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

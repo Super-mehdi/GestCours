@@ -1,0 +1,162 @@
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 120px);
+  padding: 32px 16px;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.login-card {
+  border-radius: 12px;
+  padding: 32px 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 24px;
+
+    .logo-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3f51b5, #5c6bc0);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+
+      mat-icon {
+        font-size: 32px;
+        height: 32px;
+        width: 32px;
+      }
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: #1a237e;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: #757575;
+      font-size: 14px;
+    }
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+
+    .full-width {
+      width: 100%;
+    }
+
+    .submit-btn {
+      height: 48px;
+      font-size: 16px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+  }
+}
+
+.demo-card {
+  border-radius: 12px;
+  padding: 20px 24px;
+  background-color: #fcfcfc;
+  border: 1px dashed #c5cae9;
+
+  .demo-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+
+    h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #283593;
+    }
+  }
+
+  .demo-intro {
+    font-size: 13px;
+    color: #616161;
+    margin: 4px 0 16px;
+  }
+
+  .demo-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .demo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        border-color: #3f51b5;
+        background-color: #f5f7ff;
+      }
+
+      .demo-item-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .role-badge {
+          font-size: 11px;
+          font-weight: 600;
+          color: #2e7d32;
+          background-color: #e8f5e9;
+          padding: 2px 8px;
+          border-radius: 10px;
+          width: fit-content;
+
+          &.admin-badge {
+            color: #c2185b;
+            background-color: #fce4ec;
+          }
+        }
+
+        .cred-email {
+          font-size: 14px;
+          font-weight: 500;
+          color: #212121;
+          margin-top: 2px;
+        }
+
+        .cred-desc {
+          font-size: 12px;
+          color: #757575;
+        }
+      }
+
+      .fill-btn {
+        pointer-events: none; // let row click trigger autofill
+      }
+    }
+  }
+}

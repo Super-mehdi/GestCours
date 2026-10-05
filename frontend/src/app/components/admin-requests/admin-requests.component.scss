@@ -1,0 +1,122 @@
+.requests-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .title-wrap {
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: #1a237e;
+    }
+    .subtitle {
+      margin: 4px 0 0;
+      color: #757575;
+      font-size: 14px;
+    }
+  }
+}
+
+.table-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.requests-table {
+  width: 100%;
+}
+
+.student-cell {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+
+  .student-name {
+    font-weight: 600;
+    color: #212121;
+    font-size: 14px;
+  }
+
+  .student-email {
+    font-size: 12px;
+    color: #757575;
+  }
+}
+
+.course-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .course-code-tag {
+    font-size: 12px;
+    font-weight: 700;
+    color: #283593;
+    background-color: #e8eaf6;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .course-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.status-badge-pending {
+  font-size: 11px;
+  font-weight: 700;
+  color: #e65100;
+  background-color: #fff3e0;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.actions-header {
+  text-align: right;
+  padding-right: 24px;
+}
+
+.actions-cell {
+  text-align: right;
+  padding-right: 16px;
+  white-space: nowrap;
+
+  .action-btn {
+    margin-left: 8px;
+    font-size: 13px;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 16px;
+  color: #757575;
+
+  .empty-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    color: #81c784;
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+  }
+}

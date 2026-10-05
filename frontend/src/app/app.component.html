@@ -1,24 +1,55 @@
-<mat-toolbar color="primary" class="main-toolbar">
-  <div class="toolbar-brand">
+<mat-toolbar color="primary" class="main-toolbar" *ngIf="authService.currentUser$ | async as user; else publicToolbar">
+  <div class="toolbar-brand" [routerLink]="user.role === 'ROLE_ADMIN' ? '/students' : '/my-courses'">
     <mat-icon class="brand-icon">school</mat-icon>
     <span class="brand-title">StudentCourse Portal</span>
   </div>
 
-  <nav class="toolbar-nav">
+  <!-- Admin Navigation -->
+  <nav class="toolbar-nav" *ngIf="user.role === 'ROLE_ADMIN'">
     <a mat-button routerLink="/students" routerLinkActive="active-link">
       <mat-icon>people</mat-icon> Students & Enrollments
     </a>
     <a mat-button routerLink="/courses" routerLinkActive="active-link">
       <mat-icon>menu_book</mat-icon> Courses Catalog
     </a>
+    <a mat-button routerLink="/requests" routerLinkActive="active-link">
+      <mat-icon>pending_actions</mat-icon> Course Requests
+    </a>
+  </nav>
+
+  <!-- Student Navigation -->
+  <nav class="toolbar-nav" *ngIf="user.role === 'ROLE_STUDENT'">
+    <a mat-button routerLink="/my-courses" routerLinkActive="active-link">
+      <mat-icon>school</mat-icon> My Curriculum & Requests
+    </a>
   </nav>
 
   <span class="spacer"></span>
 
-  <div class="backend-tag">
-    <span class="status-indicator"></span> Backend: 8082
+  <!-- User Profile Info & Logout -->
+  <div class="user-profile">
+    <div class="user-badge" [class.admin-user]="user.role === 'ROLE_ADMIN'">
+      <mat-icon class="user-icon">{{ user.role === 'ROLE_ADMIN' ? 'admin_panel_settings' : 'account_circle' }}</mat-icon>
+      <span class="user-name">{{ user.studentName }}</span>
+      <span class="role-pill">{{ user.role === 'ROLE_ADMIN' ? 'ADMIN' : 'STUDENT' }}</span>
+    </div>
+    <button mat-icon-button (click)="logout()" matTooltip="Sign Out" class="logout-btn">
+      <mat-icon>logout</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
+
+<!-- Public Toolbar when logged out -->
+<ng-template #publicToolbar>
+  <mat-toolbar color="primary" class="main-toolbar">
+    <div class="toolbar-brand">
+      <mat-icon class="brand-icon">school</mat-icon>
+      <span class="brand-title">StudentCourse Portal</span>
+    </div>
+    <span class="spacer"></span>
+    <span class="public-tag">Authentication Portal</span>
+  </mat-toolbar>
+</ng-template>
 
 <main class="main-content">
   <router-outlet></router-outlet>

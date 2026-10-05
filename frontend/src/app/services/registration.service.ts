@@ -30,4 +30,20 @@ export class RegistrationService {
   deleteRegistration(id: number): Observable<Registration> {
     return this.http.delete<Registration>(`${this.apiUrl}/${id}`);
   }
+
+  requestCourseEnrollment(studentId: number, courseId: number): Observable<Registration> {
+    return this.http.post<Registration>(`${this.apiUrl}/request?studentId=${studentId}&courseId=${courseId}`, {});
+  }
+
+  getPendingRegistrations(): Observable<import('../models/registration.model').RegistrationDetail[]> {
+    return this.http.get<import('../models/registration.model').RegistrationDetail[]>(`${this.apiUrl}/pending`);
+  }
+
+  approveRegistration(id: number): Observable<Registration> {
+    return this.http.put<Registration>(`${this.apiUrl}/${id}/approve`, {});
+  }
+
+  rejectRegistration(id: number): Observable<Registration> {
+    return this.http.put<Registration>(`${this.apiUrl}/${id}/reject`, {});
+  }
 }

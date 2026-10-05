@@ -28,11 +28,14 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
     private final RegistrationRepository registrationRepository;
+    private final ma.emi.backend.repository.UserRepository userRepository;
+    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
         if (studentRepository.count() > 0 || courseRepository.count() > 0) {
-            log.info("Database already seeded. Skipping initial CSV seeding.");
+            log.info("Database already seeded. Ensuring admin user exists.");
+            seedAdminIfNotExists();
             return;
         }
 
@@ -47,7 +50,40 @@ public class DatabaseSeeder implements CommandLineRunner {
         // 3. Seed Registrations linking persisted Students and Courses
         seedRegistrations(studentMap, courseMap);
 
+        // 4. Seed Admin and Student Users
+        seedUsers(studentMap);
+
         log.info("Database seeding successfully completed!");
+    }
+
+    private void seedAdminIfNotExists() {
+        if (!userRepository.existsByEmail("admin@portal.com")) {
+            ma.emi.backend.entity.User admin = ma.emi.backend.entity.User.builder()
+                    .email("admin@portal.com")
+                    .password(passwordEncoder.encode("admin123"))
+                    .role(ma.emi.backend.entity.Role.ROLE_ADMIN)
+                    .build();
+            userRepository.save(admin);
+            log.info("Seeded default administrator: admin@portal.com / admin123");
+        }
+    }
+
+    private void seedUsers(Map<Long, Student> studentMap) {
+        seedAdminIfNotExists();
+
+        // Seed users for all students with password 'student123'
+        for (Student student : studentMap.values()) {
+            if (!userRepository.existsByEmail(student.getEmail())) {
+                ma.emi.backend.entity.User user = ma.emi.backend.entity.User.builder()
+                        .email(student.getEmail())
+                        .password(passwordEncoder.encode("student123"))
+                        .role(ma.emi.backend.entity.Role.ROLE_STUDENT)
+                        .student(student)
+                        .build();
+                userRepository.save(user);
+            }
+        }
+        log.info("Seeded {} student user accounts with password 'student123'.", studentMap.size());
     }
 
     private Map<Long, Student> seedStudents() throws Exception {

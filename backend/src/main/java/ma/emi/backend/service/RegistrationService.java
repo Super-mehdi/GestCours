@@ -64,4 +64,56 @@ public class RegistrationService {
         return this.registrationMapper.toDto(registration);
     }
 
+    @Transactional
+    public RegistrationResponseDto requestCourseEnrollment(Long studentId, Long courseId) {
+        Student student = this.studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("No student with the corresponding id was found"));
+        Course course = this.courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException("No course with the corresponding id was found"));
+
+        if (this.registrationRepository.existsByStudentIdAndCourseId(studentId, courseId)) {
+            throw new DuplicateRegistrationException("A registration or request for this course already exists!");
+        }
+
+        Registration registration = Registration.builder()
+                .student(student)
+                .course(course)
+                .status(RegistrationStatus.PENDING)
+                .build();
+
+        Registration saved = this.registrationRepository.save(registration);
+        return this.registrationMapper.toDto(saved);
+    }
+
+    public List<ma.emi.backend.dto.response.RegistrationDetailDto> getPendingRegistrations() {
+        return this.registrationRepository.findByStatus(RegistrationStatus.PENDING)
+                .stream()
+                .map(r -> new ma.emi.backend.dto.response.RegistrationDetailDto(
+                        r.getId(),
+                        r.getStudent().getId(),
+                        r.getStudent().getFirstName() + " " + r.getStudent().getLastName(),
+                        r.getStudent().getEmail(),
+                        r.getCourse().getId(),
+                        r.getCourse().getCode(),
+                        r.getCourse().getName(),
+                        r.getStatus()
+                ))
+                .toList();
+    }
+
+    @Transactional
+    public RegistrationResponseDto approveRegistration(Long id) {
+        Registration registration = this.registrationRepository.findById(id)
+                .orElseThrow(() -> new RegistrationNotFoundException("No registration with id " + id + " found!"));
+        registration.setStatus(RegistrationStatus.ACTIVE);
+        return this.registrationMapper.toDto(registration);
+    }
+
+    @Transactional
+    public RegistrationResponseDto rejectRegistration(Long id) {
+        Registration registration = this.registrationRepository.findById(id)
+                .orElseThrow(() -> new RegistrationNotFoundException("No registration with id " + id + " found!"));
+        registration.setStatus(RegistrationStatus.REJECTED);
+        return this.registrationMapper.toDto(registration);
+    }
 }

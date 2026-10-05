@@ -1,0 +1,56 @@
+<div class="login-wrapper">
+  <div class="login-container">
+    <mat-card class="login-card">
+      <div class="login-header">
+        <div class="logo-circle">
+          <mat-icon>school</mat-icon>
+        </div>
+        <h2>StudentCourse Portal</h2>
+        <p class="subtitle">Please sign in to access your dashboard</p>
+      </div>
+
+      <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email Address</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="e.g. admin@portal.com" required>
+          <mat-icon matPrefix>email</mat-icon>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email is required</mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Valid email required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" type="password" placeholder="••••••••" required>
+          <mat-icon matPrefix>lock</mat-icon>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" class="submit-btn" [disabled]="loginForm.invalid || isLoading">
+          <mat-icon>login</mat-icon> Sign In
+        </button>
+      </form>
+    </mat-card>
+
+    <!-- Quick-Fill Demo Card for Testers and Evaluators -->
+    <mat-card class="demo-card">
+      <div class="demo-header">
+        <mat-icon color="accent">badge</mat-icon>
+        <h3>Demo & Test Credentials (Click to fill)</h3>
+      </div>
+      <p class="demo-intro">Click any account below to autofill the login form for testing:</p>
+
+      <div class="demo-buttons">
+        <div *ngFor="let cred of testCredentials" class="demo-item" (click)="quickFill(cred)">
+          <div class="demo-item-info">
+            <span class="role-badge" [class.admin-badge]="cred.role === 'ROLE_ADMIN'">{{ cred.label }}</span>
+            <span class="cred-email">{{ cred.email }}</span>
+            <span class="cred-desc">{{ cred.description }}</span>
+          </div>
+          <button mat-stroked-button color="primary" type="button" class="fill-btn">Autofill</button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,116 @@
+<div class="portal-container">
+  <div class="welcome-banner">
+    <div class="banner-text">
+      <h2>Hello, {{ studentName }}! 🎓</h2>
+      <p>Manage your enrolled curriculum and request registration for new upcoming courses.</p>
+    </div>
+  </div>
+
+  <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+
+  <div class="portal-sections">
+    <!-- Section 1: My Courses & Enrollment Requests -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="title-with-badge">
+          <mat-icon color="primary">school</mat-icon>
+          <h3>My Registered & Requested Courses</h3>
+        </div>
+        <span class="count-badge">{{ myEnrollments.length }} Total</span>
+      </div>
+
+      <div *ngIf="myEnrollments.length === 0 && !isLoading" class="empty-state">
+        <mat-icon class="empty-icon">menu_book</mat-icon>
+        <p>You have not registered for or requested any courses yet.</p>
+        <span class="subtext">Browse available courses below and click "Request Enrollment".</span>
+      </div>
+
+      <!-- Active Enrollments -->
+      <div *ngIf="activeEnrollments.length > 0" class="sub-group">
+        <span class="group-title active-title">
+          <mat-icon>check_circle</mat-icon> Confirmed & Active Courses ({{ activeEnrollments.length }})
+        </span>
+        <div class="courses-grid">
+          <div *ngFor="let item of activeEnrollments" class="course-tile active-tile">
+            <div class="tile-header">
+              <span class="code-tag">{{ item.course.code }}</span>
+              <span class="status-chip chip-active">ACTIVE</span>
+            </div>
+            <h4 class="course-name">{{ item.course.name }}</h4>
+            <p class="course-desc">{{ item.course.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Requests -->
+      <div *ngIf="pendingEnrollments.length > 0" class="sub-group">
+        <span class="group-title pending-title">
+          <mat-icon>hourglass_empty</mat-icon> Awaiting Admin Approval ({{ pendingEnrollments.length }})
+        </span>
+        <div class="courses-grid">
+          <div *ngFor="let item of pendingEnrollments" class="course-tile pending-tile">
+            <div class="tile-header">
+              <span class="code-tag">{{ item.course.code }}</span>
+              <span class="status-chip chip-pending">PENDING APPROVAL</span>
+            </div>
+            <h4 class="course-name">{{ item.course.name }}</h4>
+            <p class="course-desc">{{ item.course.description }}</p>
+            <div class="tile-footer">
+              <span class="pending-note">The administrator will review your request.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rejected / Inactive -->
+      <div *ngIf="otherEnrollments.length > 0" class="sub-group">
+        <span class="group-title other-title">
+          <mat-icon>highlight_off</mat-icon> Rejected / Inactive ({{ otherEnrollments.length }})
+        </span>
+        <div class="courses-grid">
+          <div *ngFor="let item of otherEnrollments" class="course-tile rejected-tile">
+            <div class="tile-header">
+              <span class="code-tag">{{ item.course.code }}</span>
+              <span class="status-chip chip-rejected">{{ item.status }}</span>
+            </div>
+            <h4 class="course-name">{{ item.course.name }}</h4>
+            <p class="course-desc">{{ item.course.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Available Courses to Request -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="title-with-badge">
+          <mat-icon color="accent">library_add</mat-icon>
+          <h3>Browse Available Courses to Request</h3>
+        </div>
+        <span class="count-badge available-badge">{{ availableCourses.length }} Available</span>
+      </div>
+
+      <div *ngIf="availableCourses.length === 0 && !isLoading" class="empty-state">
+        <mat-icon class="empty-icon">done_all</mat-icon>
+        <p>You have registered or requested all available courses in the curriculum!</p>
+      </div>
+
+      <div class="courses-grid" *ngIf="availableCourses.length > 0">
+        <div *ngFor="let course of availableCourses" class="course-tile available-tile">
+          <div class="tile-header">
+            <span class="code-tag">{{ course.code }}</span>
+            <span class="cap-tag">Cap: {{ course.capacity }}</span>
+          </div>
+          <h4 class="course-name">{{ course.name }}</h4>
+          <p class="course-desc">{{ course.description }}</p>
+
+          <div class="action-footer">
+            <button mat-raised-button color="primary" (click)="requestEnrollment(course)">
+              <mat-icon>send</mat-icon> Request Enrollment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

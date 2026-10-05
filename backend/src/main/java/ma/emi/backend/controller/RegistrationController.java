@@ -39,5 +39,23 @@ public class RegistrationController {
         return this.registrationService.deleteRegistration(id);
     }
 
+    @PostMapping("/request")
+    public RegistrationResponseDto requestEnrollment(@RequestParam Long studentId, @RequestParam Long courseId){
+        return this.registrationService.requestCourseEnrollment(studentId, courseId);
+    }
 
+    @GetMapping("/pending")
+    public List<ma.emi.backend.dto.response.RegistrationDetailDto> getPendingRegistrations(){
+        return this.registrationService.getPendingRegistrations();
+    }
+
+    @PutMapping("/{id}/approve")
+    public RegistrationResponseDto approveRegistration(@PathVariable Long id){
+        return this.registrationService.approveRegistration(id);
+    }
+
+    @PutMapping("/{id}/reject")
+    public RegistrationResponseDto rejectRegistration(@PathVariable Long id){
+        return this.registrationService.rejectRegistration(id);
+    }
 }

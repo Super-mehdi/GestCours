@@ -86,7 +86,7 @@ export class StudentListComponent implements OnInit {
       list.push({
         registrationId: r.id!,
         course: course,
-        status: r.status
+        status: (r.registrationStatus || r.status || 'ACTIVE') as string
       });
       this.studentRegistrations.set(r.studentId, list);
     });
