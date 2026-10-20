@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsConfig {
 
     @Bean
