@@ -8,7 +8,7 @@ import { LoginRequest, LoginResponse, TestCredential } from '../models/user.mode
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost:8082/api/auth';
+  private readonly apiUrl = 'https://gestcours-backend.onrender.com/api';
   private readonly tokenKey = 'sc_auth_token';
   private readonly userKey = 'sc_auth_user';
 
