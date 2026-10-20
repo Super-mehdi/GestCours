@@ -7,7 +7,7 @@ import { Course, CourseRequest } from '../models/course.model';
   providedIn: 'root'
 })
 export class CourseService {
-  private readonly apiUrl = 'https://gestcours-backend.onrender.com/api';
+  private readonly apiUrl = 'https://gestcours-qfgb.onrender.com/api';
 
   constructor(private http: HttpClient) {}
 
