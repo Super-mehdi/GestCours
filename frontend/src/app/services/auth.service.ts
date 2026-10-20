@@ -8,7 +8,7 @@ import { LoginRequest, LoginResponse, TestCredential } from '../models/user.mode
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://gestcours-qfgb.onrender.com/api';
+  private apiUrl = 'https://gestcours-qfgb.onrender.com/api/auth';
   private readonly tokenKey = 'sc_auth_token';
   private readonly userKey = 'sc_auth_user';
 
