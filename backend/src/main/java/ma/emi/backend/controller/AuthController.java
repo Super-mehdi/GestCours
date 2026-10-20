@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = {"http://localhost:4200", "https://gestcours-frontend.onrender.com"}, allowCredentials = "true")
 @RequiredArgsConstructor
 public class AuthController {
 
