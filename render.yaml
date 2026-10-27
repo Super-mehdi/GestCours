@@ -22,10 +22,11 @@ services:
           property: connectionString
       - key: DATABASE_SSL
         value: "false"
-      - key: UNLEASH_DEFAULT_ADMIN_USERNAME
-        value: admin
-      - key: UNLEASH_DEFAULT_ADMIN_PASSWORD
-        sync: false
+      # Jetons de TP (non secrets) : a regenerer pour un usage reel
+      - key: INIT_CLIENT_API_TOKENS
+        value: "*:development.gestcours-tp-client-token"
+      - key: INIT_ADMIN_API_TOKENS
+        value: "*:*.gestcours-tp-admin-token"
 
   - type: web
     name: app-stable
@@ -39,7 +40,7 @@ services:
       - key: UNLEASH_URL
         sync: false
       - key: UNLEASH_API_TOKEN
-        sync: false
+        value: "*:development.gestcours-tp-client-token"
 
   - type: web
     name: app-canary
@@ -53,7 +54,7 @@ services:
       - key: UNLEASH_URL
         sync: false
       - key: UNLEASH_API_TOKEN
-        sync: false
+        value: "*:development.gestcours-tp-client-token"
 
   - type: web
     name: canary-router
