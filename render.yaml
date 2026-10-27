@@ -1,0 +1,70 @@
+# Blueprint Render : Progressive Delivery (Unleash + Canary)
+databases:
+  - name: unleash-db
+    plan: free
+    databaseName: unleash
+    user: unleash
+    postgresMajorVersion: "16"
+
+services:
+  - type: web
+    name: unleash-server
+    runtime: image
+    image:
+      url: docker.io/unleashorg/unleash-server:8.2.0
+    plan: free
+    envVars:
+      - key: PORT
+        value: "4242"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: unleash-db
+          property: connectionString
+      - key: DATABASE_SSL
+        value: "false"
+      - key: UNLEASH_DEFAULT_ADMIN_USERNAME
+        value: admin
+      - key: UNLEASH_DEFAULT_ADMIN_PASSWORD
+        sync: false
+
+  - type: web
+    name: app-stable
+    runtime: docker
+    rootDir: backend
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: APP_VERSION
+        value: v1.0.0-stable
+      - key: UNLEASH_URL
+        sync: false
+      - key: UNLEASH_API_TOKEN
+        sync: false
+
+  - type: web
+    name: app-canary
+    runtime: docker
+    rootDir: backend
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: APP_VERSION
+        value: v2.0.0-canary
+      - key: UNLEASH_URL
+        sync: false
+      - key: UNLEASH_API_TOKEN
+        sync: false
+
+  - type: web
+    name: canary-router
+    runtime: docker
+    rootDir: canary-router
+    plan: free
+    healthCheckPath: /router/health
+    envVars:
+      - key: STABLE_HOST
+        sync: false
+      - key: CANARY_HOST
+        sync: false
+      - key: CANARY_WEIGHT
+        value: "10"

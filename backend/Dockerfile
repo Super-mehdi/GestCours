@@ -18,4 +18,5 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
+# Render injecte $PORT ; APP_VERSION distingue app-stable et app-canary
 ENTRYPOINT ["java", "-jar", "app.jar"]

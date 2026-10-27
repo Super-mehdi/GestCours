@@ -16,4 +16,9 @@ public class GlobalExceptionHandler {
     ResponseEntity<?> handleDuplicateException(Exception ex){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(SimulatedCrashException.class)
+    ResponseEntity<?> handleSimulatedCrash(Exception ex){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    }
 }
