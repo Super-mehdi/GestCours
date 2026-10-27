@@ -9,7 +9,7 @@ import ma.emi.backend.entity.Student;
 import ma.emi.backend.repository.CourseRepository;
 import ma.emi.backend.repository.RegistrationRepository;
 import ma.emi.backend.repository.StudentRepository;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -24,15 +24,25 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class DatabaseSeeder implements CommandLineRunner {
+public class DatabaseSeeder implements SmartInitializingSingleton {
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
     private final RegistrationRepository registrationRepository;
     private final ma.emi.backend.repository.UserRepository userRepository;
     private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
+    // Runs before the web server starts, so no login can arrive before the accounts exist
+    // (a CommandLineRunner runs after startup: logins during a cold start got 401).
     @Override
-    public void run(String... args) throws Exception {
+    public void afterSingletonsInstantiated() {
+        try {
+            seed();
+        } catch (Exception e) {
+            throw new IllegalStateException("Database seeding failed", e);
+        }
+    }
+
+    private void seed() throws Exception {
         if (studentRepository.count() > 0 || courseRepository.count() > 0) {
             log.info("Database already seeded. Ensuring admin user exists.");
             seedAdminIfNotExists();
@@ -44,14 +54,14 @@ public class DatabaseSeeder implements CommandLineRunner {
         // 1. Seed Students & track CSV id -> persisted Student mapping
         Map<Long, Student> studentMap = seedStudents();
 
-        // 2. Seed Courses & track CSV id -> persisted Course mapping
+        // 2. Seed Admin and Student Users
+        seedUsers(studentMap);
+
+        // 3. Seed Courses & track CSV id -> persisted Course mapping
         Map<Long, Course> courseMap = seedCourses();
 
-        // 3. Seed Registrations linking persisted Students and Courses
+        // 4. Seed Registrations linking persisted Students and Courses
         seedRegistrations(studentMap, courseMap);
-
-        // 4. Seed Admin and Student Users
-        seedUsers(studentMap);
 
         log.info("Database seeding successfully completed!");
     }
