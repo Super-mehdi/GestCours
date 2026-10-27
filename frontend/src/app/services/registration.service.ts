@@ -7,7 +7,7 @@ import { Registration, RegistrationRequest } from '../models/registration.model'
   providedIn: 'root'
 })
 export class RegistrationService {
-  private readonly apiUrl = 'https://gestcours-qfgb.onrender.com/api';
+  private readonly apiUrl = 'https://gestcours-qfgb.onrender.com/api/registrations';
 
   constructor(private http: HttpClient) {}
 
